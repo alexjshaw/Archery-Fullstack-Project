@@ -7,7 +7,7 @@ import ScoresContent from "../components/ScoresContent";
 const Scores = () => {
   console.log('Scores Loaded')
   return (
-    <Flex w="80vw" mx="auto" direction="row" spacing={4} p={4}>
+    <Flex w="80vw" mx="auto" p={4} maxHeight="100%" overflowY="auto">
       {/* ScoresLeftNav */}
       <Box w="100px" bg="gray.200" p={4} mr={4}>
         <ScoresLeftNav />
@@ -21,4 +21,5 @@ const Scores = () => {
   );
 };
 
+// NEW VERSION
 export default Scores;

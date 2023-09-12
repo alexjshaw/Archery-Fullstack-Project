@@ -19,12 +19,12 @@ function App() {
   // console.log('isAuthenticated', isAuthenticated)
 
   return (
-    <Box w="100vw" h="100vh" display="flex" flexDirection="column" bg={'gray.50'}>
+    <Box w="100vw" h="100vh" display="flex" flexDirection="column" bg={'gray.50'} className="App Box">
       {/* NavBar always visible at the top */}
       <NavBar />
 
       {/* Main content container */}
-      <Box as="main" flex="1" overflowY="auto">
+      <Box as="main" flex="1" overflowY="auto" display="flex" flexDirection="column" className="Content Box">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route
