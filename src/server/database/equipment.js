@@ -64,7 +64,6 @@ export default class Equipment {
         query.equipmentName = new RegExp(query.equipmentName, 'i')
       }
 
-
       const equipment = await EquipmentModel.find(query).exec()
 
       if (!equipment || equipment.length === 0) {

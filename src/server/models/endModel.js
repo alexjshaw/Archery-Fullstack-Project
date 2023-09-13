@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose from 'mongoose'
 
 const arrowValueSchema = new mongoose.Schema({
   arrowNumber: { type: Number, required: true },

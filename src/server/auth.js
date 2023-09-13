@@ -14,20 +14,20 @@ export const extractAuth0Id = (req, res, next) => {
 }
 
 export const extractMongoId = async (req, res, next) => {
-  extractAuth0Id(req, res, async () => {
-    try {
-      const auth0Id = req.auth0Id
-      const user = await User.findOne({ auth0Id })
+  try {
+    extractAuth0Id(req, res, () => {})
 
-      if (!user) {
-        return res.status(404).json({ message: 'User not found' })
-      }
+    const auth0Id = req.auth0Id
+    const user = await User.findOne({ auth0Id })
 
-      req.mongo_id = user._id
-      next()
-    } catch (error) {
-      console.error('Error:', error)
-      return res.status(500).json({ message: 'Internal Server Error' })
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' })
     }
-  })
+
+    req.mongo_id = user._id
+    next()
+  } catch (error) {
+    console.error('Error:', error)
+    return res.status(500).json({ message: 'Internal Server Error' })
+  }
 }

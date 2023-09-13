@@ -7,9 +7,9 @@ import ScoresContent from "../components/ScoresContent";
 const Scores = () => {
   console.log('Scores Loaded')
   return (
-    <Flex w="80vw" mx="auto" p={4} maxHeight="100%" overflowY="auto">
+    <Flex maxW="80vw" mx="auto" p={4} maxHeight="100%" alignItems="flex-start" bg={'red.100'}>
       {/* ScoresLeftNav */}
-      <Box w="100px" bg="gray.200" p={4} mr={4}>
+      <Box maxW="20%" bg="gray.200" p={4} mr={4}>
         <ScoresLeftNav />
       </Box>
 

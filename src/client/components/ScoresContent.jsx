@@ -2,7 +2,7 @@ import { Box, Button, Flex, Text } from '@chakra-ui/react';
 import { useState } from 'react';
 
 const ScoresContent = () => {
-  const [arrowValues, setArrowValues] = useState([...Array(16)].map(() => Array(6).fill(null)));
+  const [arrowValues, setArrowValues] = useState([...Array(12)].map(() => Array(6).fill(null)));
 
   const handleButtonPress = (value) => {
     let newValues = [...arrowValues];
@@ -19,7 +19,11 @@ const ScoresContent = () => {
   return (
     <Flex direction="column" h="100%" className='ScoresContent Flex'>
       {/* Scrollable container for arrow values */}
-      <Box flex="1" overflowY="auto" mb={4}>
+      <Box flex="1" overflowY="auto" mb={4} sx={{
+      "::-webkit-scrollbar": {
+        display: "none",
+      },
+    }}>
         {arrowValues.map((row, rowIndex) => (
           <Flex key={rowIndex} mb={2} border="1px solid black" p={2}>
             {row.map((value, valueIndex) => (

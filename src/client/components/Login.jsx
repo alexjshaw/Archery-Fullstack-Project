@@ -1,11 +1,16 @@
 import { useAuth0 } from "@auth0/auth0-react";
-import React from "react";
+import React, { useContext } from "react";
 import { Button } from "@chakra-ui/react";
+import AuthContext from "../context/AuthContext";
 
-const LoginButton = ({ buttonProps }) => {
+const LoginButton = ({ isLoading }) => {
   const { loginWithRedirect } = useAuth0();
+  const { updateProfileComplete } = useContext(AuthContext)
 
   const handleLogin = async () => {
+    localStorage.removeItem("profileComplete");
+    updateProfileComplete(false);
+
     await loginWithRedirect({
       appState: {
         returnTo: "/dashboard",
@@ -17,7 +22,9 @@ const LoginButton = ({ buttonProps }) => {
   };
   
   return (
-    <Button {...buttonProps} className="button__login" onClick={handleLogin}>
+    <Button
+    isLoading={isLoading}
+    className="button__login" onClick={handleLogin}>
       Log In
     </Button>
   );

@@ -8,7 +8,6 @@ import roundTypeModel from '../models/roundTypeModel.js'
 import scoreModel from '../models/scoreModel.js'
 import sightmarkModel from '../models/sightmarkModel.js'
 
-
 const mongoDBURL = 'mongodb://127.0.0.1:27017/ArcheryScorecard'
 
 const connectDB = async () => {
