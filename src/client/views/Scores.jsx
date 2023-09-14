@@ -1,11 +1,20 @@
 import React, { Fragment, useState, useEffect } from "react";
-import { Box, Flex } from '@chakra-ui/react';
+import { Box, Flex, Button } from '@chakra-ui/react';
 
 import ScoresLeftNav from "../components/ScoresLeftNav";
 import ScoresContent from "../components/ScoresContent";
+import NewScoreForm from "../components/NewScoreForm";
 
 const Scores = () => {
   console.log('Scores Loaded')
+
+  const [currentScore, setCurrentScore] = useState()
+  const [activeComponent, setActiveComponent] = useState()
+
+  function logCurrentScore () {
+    console.log('currentScore', currentScore)
+  }
+
   return (
     <Flex maxW="80vw" mx="auto" p={4} maxHeight="100%" alignItems="flex-start" bg={'red.100'}>
       {/* ScoresLeftNav */}
@@ -16,10 +25,11 @@ const Scores = () => {
       {/* ScoresContent */}
       <Box flex="1" bg="gray.300" p={4}>
         <ScoresContent />
+        {/* <Button onClick={logCurrentScore}>Log Current Score</Button> */}
+        {/* <NewScoreForm setCurrentScore={setCurrentScore} setActiveComponent={setActiveComponent} /> */}
       </Box>
     </Flex>
   );
 };
 
-// NEW VERSION
 export default Scores;
