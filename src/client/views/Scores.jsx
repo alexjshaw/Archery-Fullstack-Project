@@ -16,14 +16,14 @@ const Scores = () => {
   }
 
   return (
-    <Flex maxW="80vw" mx="auto" p={4} maxHeight="100%" alignItems="flex-start" bg={'red.100'}>
+    <Flex maxW="80vw" mx="auto" p={4} maxH="100%" alignItems="flex-start" bg={'red.100'}>
       {/* ScoresLeftNav */}
       <Box maxW="20%" bg="gray.200" p={4} mr={4}>
         <ScoresLeftNav />
       </Box>
 
       {/* ScoresContent */}
-      <Box flex="1" bg="gray.300" p={4}>
+      <Box flex="1" bg="gray.300" p={4} maxH={"100%"}>
         <ScoresContent />
         {/* <Button onClick={logCurrentScore}>Log Current Score</Button> */}
         {/* <NewScoreForm setCurrentScore={setCurrentScore} setActiveComponent={setActiveComponent} /> */}

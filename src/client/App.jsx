@@ -47,7 +47,7 @@ const MainApp = () => {
       <NavBar />
 
       {/* Main content container */}
-      <Box as="main" maxW='1280px' mx={'auto'} flex="1" overflowY="auto" display="flex" flexDirection="column" className="Content Box">
+      <Box as="main" maxW='1280px' maxH="100%" mx={'auto'} flex="1" overflowY="auto" display="flex" flexDirection="column" className="Content Box" my={4}>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route
