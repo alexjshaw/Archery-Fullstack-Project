@@ -42,12 +42,12 @@ const MainApp = () => {
   }
 
   return (
-    <Box w="100%" h="100%" maxH={"100vh"} display="flex" flexDirection="column" bg={'gray.50'} className="App Box">
+    <Box w="100vw" h="100%" maxH={"100vh"} display="flex" flexDirection="column" bg={'gray.50'} className="App Box">
       {/* NavBar always visible at the top */}
       <NavBar />
 
       {/* Main content container */}
-      <Box as="main" maxW='1280px' maxH="100%" mx={'auto'} flex="1" overflowY="auto" display="flex" flexDirection="column" className="Content Box" my={4}>
+      <Box as="main" maxW='1280px' maxH="100%" mx={'auto'} flex="1" overflowY="auto" display="flex" flexDirection="column" className="Main Content Box" my={4}>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route
