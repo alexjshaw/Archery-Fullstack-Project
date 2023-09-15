@@ -14,7 +14,7 @@ import { AuthenticationGuard } from "./components/AuthenticationGuard";
 import AuthProvider from "./context/AuthProvider";
 import AuthContext from "./context/AuthContext";
 
-import { Box } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
 
 function App() {
   console.log('App Loaded');
@@ -42,12 +42,13 @@ const MainApp = () => {
   }
 
   return (
-    <Box w="100vw" h="100%" maxH={"100vh"} display="flex" flexDirection="column" bg={'gray.50'} className="App Box">
-      {/* NavBar always visible at the top */}
-      <NavBar />
+    <Box w="100vw" height="100vh" bg={'gray.50'} >
+      <Flex direction="column" height="100%">
+        {/* NavBar always visible at the top */}
+        <NavBar />
 
-      {/* Main content container */}
-      <Box as="main" maxW='1280px' maxH="100%" mx={'auto'} flex="1" overflowY="auto" display="flex" flexDirection="column" className="Main Content Box" my={4}>
+        {/* Main content container */}
+        <Box as="main" maxW='1280px' mx={'auto'} overflowY="auto" className="Content Box" my={4}>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route
@@ -60,7 +61,8 @@ const MainApp = () => {
           />
           <Route path="/callback" element={<CallbackPage />} />
         </Routes>
-      </Box>
+        </Box>
+      </Flex>
     </Box>
   );
 }
