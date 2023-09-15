@@ -21,7 +21,7 @@ const ScoresContent = () => {
   };
 
   return (
-    <Flex direction="column" className='ScoresContent Flex' mb={4} maxH={"80vh"}>
+    <Flex direction="column" className='ScoresContent Flex' mb={4} maxH={"100%"}>
       {/* Scrollable container for arrow values */}
       <Box flex="1" mb={4} overflowY="auto" >
         {arrowValues.map((row, rowIndex) => (

@@ -42,7 +42,7 @@ const MainApp = () => {
   }
 
   return (
-    <Box w="100vw" h="100vh" display="flex" flexDirection="column" bg={'gray.50'} className="App Box">
+    <Box w="100%" h="100%" maxH={"100vh"} display="flex" flexDirection="column" bg={'gray.50'} className="App Box">
       {/* NavBar always visible at the top */}
       <NavBar />
 
@@ -59,7 +59,6 @@ const MainApp = () => {
             element={<AuthenticationGuard component={Dashboard} isDashboard={true} />}
           />
           <Route path="/callback" element={<CallbackPage />} />
-          {/* You can add more routes as needed */}
         </Routes>
       </Box>
     </Box>
