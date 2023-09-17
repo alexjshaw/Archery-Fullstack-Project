@@ -1,10 +1,9 @@
 import mongoose from 'mongoose'
 
 const arrowSchema = new mongoose.Schema({
-  endNumber: { type: Number, required: true, min: 1 },
+  arrowNumber: { type: Number, required: true, min: 1 },
   arrowScore: { type: Number, required: true, min: 0, max: 10 },
-  isX: { type: Boolean, required: true, default: false },
-  arrowNumber: {}
+  isX: { type: Boolean, required: true, default: false }
 })
 
 const scoreSchema = new mongoose.Schema({
