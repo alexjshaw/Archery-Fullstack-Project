@@ -25,7 +25,7 @@ export const createScore = async (req, res) => {
 
 export const updateScore = async (req, res) => {
   try {
-    const allowedUpdates = ['notes', 'location', 'weather', 'equipment', 'visible']
+    const allowedUpdates = ['notes', 'location', 'weather', 'equipment', 'visible', 'arrowValues']
     const query = filterAllowedUpdates(req.body, allowedUpdates)
     const scoreId = req.params.id
     const userId = req.mongo_id.toString()

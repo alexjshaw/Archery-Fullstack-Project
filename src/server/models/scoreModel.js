@@ -46,4 +46,34 @@ const scoreSchema = new mongoose.Schema({
 },
 { timestamps: true })
 
+scoreSchema.pre('save', function (next) {
+  // Calculate totalScore
+  this.totalScore = this.arrowValues.reduce((acc, arrow) => acc + arrow.arrowScore, 0)
+
+  // Calculate scored10s
+  this.scored10s = this.arrowValues.filter(arrow => arrow.arrowScore === 10).length
+
+  // Calculate scoredXs
+  this.scoredXs = this.arrowValues.filter(arrow => arrow.isX).length
+
+  next()
+})
+
+scoreSchema.pre('findOneAndUpdate', function (next) {
+  const arrowValues = this.getUpdate().arrowValues
+
+  if (arrowValues) {
+    // Calculate totalScore
+    this.getUpdate().totalScore = arrowValues.reduce((acc, arrow) => acc + arrow.arrowScore, 0)
+
+    // Calculate scored10s
+    this.getUpdate().scored10s = arrowValues.filter(arrow => arrow.arrowScore === 10).length
+
+    // Calculate scoredXs
+    this.getUpdate().scoredXs = arrowValues.filter(arrow => arrow.isX).length
+  }
+
+  next()
+})
+
 export default mongoose.model('Score', scoreSchema)

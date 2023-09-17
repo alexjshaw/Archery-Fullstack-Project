@@ -79,6 +79,7 @@ const ScoresContent = ({ scoreId, currentScore, setCurrentScore }) => {
 
   const testFunction = () => {
     console.log("currentScore", currentScore);
+    console.log('arrowValues', arrowValues)
   };
 
   if (!fetchComplete) {
@@ -93,9 +94,9 @@ const ScoresContent = ({ scoreId, currentScore, setCurrentScore }) => {
       height="100%"
       gap={4}
     >
-      <ArrowValues />
-      <ScoreTotals currentScore={currentScore} />
-      <ArrowButtons />
+      <ArrowValues arrowValues={arrowValues} />
+      {/* <ScoreTotals currentScore={currentScore} /> */}
+      <ArrowButtons arrowValues={arrowValues} setArrowValues={setArrowValues} />
       <Button onClick={testFunction}>TEST</Button>
     </Flex>
   );
@@ -142,10 +143,7 @@ const ScoreInfo = () => {
   );
 };
 
-const ArrowValues = () => {
-  const [arrowValues, setArrowValues] = useState(
-    [...Array(16)].map(() => Array(6).fill(null))
-  );
+const ArrowValues = ({ arrowValues }) => {
   return (
     <Flex
       direction="column"
@@ -168,7 +166,7 @@ const ArrowValues = () => {
   );
 };
 
-const ArrowButtons = () => {
+const ArrowButtons = ({ arrowValues, setArrowValues }) => {
   const handleButtonPress = (value) => {
     let newValues = [...arrowValues];
     for (let i = 0; i < newValues.length; i++) {
@@ -187,6 +185,8 @@ const ArrowButtons = () => {
           {number}
         </Button>
       ))}
+      <Button onClick={() => handleButtonPress("M")}>M</Button>
+      <Button onClick={() => handleButtonPress("X")}>X</Button>
     </Flex>
   );
 };
