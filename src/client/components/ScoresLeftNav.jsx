@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Text, VStack } from "@chakra-ui/react";
+import { Box, Button, Flex, Text, VStack, Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel } from "@chakra-ui/react";
 import React from "react";
 
 const ScoresLeftNav = ({ userScores, onScoreSelect }) => {
@@ -20,7 +20,7 @@ const ScoresLeftNav = ({ userScores, onScoreSelect }) => {
           height="auto"
           py={3}
         >
-          <VStack spacing={1} align="start">
+          <VStack spacing={1} align="center">
             <Text>{score.scoreType}</Text>
             <Text fontSize="sm">
               {new Date(score.updatedAt).toLocaleDateString()}
@@ -43,21 +43,31 @@ const ScoresLeftNav = ({ userScores, onScoreSelect }) => {
     { title: "Recent Scores", scores: filterAndSortScores(true) },
   ];
 
-  return (
-    <VStack spacing={4} align="center" w="100%">
-      <Button width="100%" whiteSpace="normal" height="auto" py={3} onClick={() => handleButtonClick(null)} >
-        New Score
-      </Button>
+return (
+  <VStack spacing={4} align="center" w="100%">
+    <Button width="100%" whiteSpace="normal" height="auto" py={3} onClick={() => handleButtonClick(null)}>
+      New Score
+    </Button>
+    <Accordion allowToggle width="100%">
       {sections.map((section) => (
-        <React.Fragment key={section.title}>
-          <Text fontWeight="bold" mb={2}>
-            {section.title}
-          </Text>
-          {renderScoreButtons(section.scores)}
-        </React.Fragment>
+        <AccordionItem key={section.title}>
+          <h2>
+            <AccordionButton>
+              <Box flex="1" textAlign="center">
+                {section.title}
+              </Box>
+              <AccordionIcon />
+            </AccordionButton>
+          </h2>
+          <AccordionPanel pb={4}>
+            {renderScoreButtons(section.scores)}
+          </AccordionPanel>
+        </AccordionItem>
       ))}
-    </VStack>
-  );
+    </Accordion>
+  </VStack>
+);
+
 };
 
 export default ScoresLeftNav;

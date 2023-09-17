@@ -1,10 +1,69 @@
-import { Box, Button, Flex, Text, Accordion, AccordionItem, AccordionButton, AccordionIcon, AccordionPanel } from "@chakra-ui/react";
-import { useState } from "react";
+import {
+  Box,
+  Button,
+  Flex,
+  Text,
+  Accordion,
+  AccordionItem,
+  AccordionButton,
+  AccordionIcon,
+  AccordionPanel,
+} from "@chakra-ui/react";
+import { useState, useEffect, Fragment } from "react";
+import { useAuth0 } from "@auth0/auth0-react";
+import PageLoader from "./PageLoader";
 
-const ScoresContent = () => {
+const ScoresContent = ({ scoreId, currentScore, setCurrentScore }) => {
+  console.log('ScoresContent loaded')
+
+  const [fetchComplete, setFetchComplete] = useState(false);
   const [arrowValues, setArrowValues] = useState(
     [...Array(16)].map(() => Array(6).fill(null))
   );
+  const { getAccessTokenSilently } = useAuth0();
+
+  useEffect(() => {
+
+    const fetchScore = async () => {
+      try {
+        const token = await getAccessTokenSilently();
+        const response = await fetch(
+          `http://localhost:3000/score/?_id=${scoreId}`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error("Network response was not OK");
+        }
+
+        const result = await response.json();
+
+        if (result.status === "success") {
+          await setCurrentScore(...result.data);
+        } else {
+          console.error("Failed to fetch scores:", result);
+        }
+      } catch (error) {
+        console.error(
+          "There was a problem with the fetch operation:",
+          error.message
+        );
+      }
+      setFetchComplete(true);
+    };
+
+    if (!currentScore || currentScore._id !== scoreId) {
+      fetchScore();
+    } else {
+      setFetchComplete(true);
+    }
+
+  }, [scoreId]);
 
   const handleButtonPress = (value) => {
     let newValues = [...arrowValues];
@@ -18,6 +77,14 @@ const ScoresContent = () => {
     setArrowValues(newValues);
   };
 
+  const testFunction = () => {
+    console.log("currentScore", currentScore);
+  };
+
+  if (!fetchComplete) {
+    return <PageLoader />;
+  }
+
   return (
     <Flex
       direction="column"
@@ -26,18 +93,38 @@ const ScoresContent = () => {
       height="100%"
       gap={4}
     >
-      {/* Scrollable container for arrow values */}
       <ArrowValues />
-      <ScoreStats />
-      {/* Buttons to Enter Arrow Values */}
+      <ScoreTotals currentScore={currentScore} />
       <ArrowButtons />
+      <Button onClick={testFunction}>TEST</Button>
     </Flex>
   );
 };
 
-const ScoreStats = () => {
+const ScoreTotals = ({currentScore}) => {
+  return (
+    <Flex border={"solid 2px blue"} bg={"blue.200"}>
+      {!currentScore ? "No Current Score" : `${currentScore._id}`}
+    </Flex>
+  );
+};
+
+const ScoreInfo = () => {
   return (
     <Accordion allowToggle bg={"blue.50"}>
+      <AccordionItem>
+        <h2>
+          <AccordionButton>
+            <Box as="span" flex="1" textAlign="left">
+              View Round Details
+            </Box>
+            <AccordionIcon />
+          </AccordionButton>
+        </h2>
+        <AccordionPanel>
+          Here are some more details about the round.
+        </AccordionPanel>
+      </AccordionItem>
       <AccordionItem>
         <h2>
           <AccordionButton>
@@ -52,8 +139,8 @@ const ScoreStats = () => {
         </AccordionPanel>
       </AccordionItem>
     </Accordion>
-  )
-}
+  );
+};
 
 const ArrowValues = () => {
   const [arrowValues, setArrowValues] = useState(
@@ -82,7 +169,6 @@ const ArrowValues = () => {
 };
 
 const ArrowButtons = () => {
-
   const handleButtonPress = (value) => {
     let newValues = [...arrowValues];
     for (let i = 0; i < newValues.length; i++) {

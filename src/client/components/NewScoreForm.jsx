@@ -18,12 +18,12 @@ import PageLoader from "../components/PageLoader";
 import { useAuth0 } from "@auth0/auth0-react";
 import AuthContext from "../context/AuthContext";
 
-const NewScoreForm = ({ setActiveComponent, setCurrentScore }) => {
-  const user = useContext(AuthContext)
+const NewScoreForm = ({ setCurrentScore, setCurrentScoreId }) => {
+  const user = useContext(AuthContext);
   const [roundTypes, setRoundTypes] = useState([]);
   const [bowTypes, setBowTypes] = useState([]);
   const [equipment, setEquipment] = useState([]);
-  const [archerProfiles, setArcherProfiles] = useState([])
+  const [archerProfiles, setArcherProfiles] = useState([]);
   const { getAccessTokenSilently } = useAuth0();
 
   useEffect(() => {
@@ -48,7 +48,7 @@ const NewScoreForm = ({ setActiveComponent, setCurrentScore }) => {
         getOptions
       );
       const archerProfileData = await archerProfileResponse.json();
-      setArcherProfiles(archerProfileData.data)
+      setArcherProfiles(archerProfileData.data);
       const bowTypes = archerProfileData.data.map((profile) => profile.bowType);
       setBowTypes(bowTypes);
 
@@ -64,35 +64,38 @@ const NewScoreForm = ({ setActiveComponent, setCurrentScore }) => {
   }, []);
 
   const createScore = async (values) => {
-    const token = await getAccessTokenSilently()
-  
+    const token = await getAccessTokenSilently();
+
     try {
-      const response = await fetch('http://localhost:3000/score', {
-        method: 'POST',
+      const response = await fetch("http://localhost:3000/score", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify( values )
-      })
-      const responseData = await response.json()
-      const roundTypeId = responseData.data.roundType
+        body: JSON.stringify(values),
+      });
+      const responseData = await response.json();
+      const roundTypeId = responseData.data.roundType;
 
-      const roundTypeResponse = await fetch(`http://localhost:3000/roundtype/${roundTypeId}`, {
-        method: 'GET',
-        headers: {
-          'Authorization': `Bearer ${token}`
+      const roundTypeResponse = await fetch(
+        `http://localhost:3000/roundtype/${roundTypeId}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         }
-      })
-      const roundTypeData = await roundTypeResponse.json()
-      const totalArrows = roundTypeData.data.totalDozens * 12
+      );
+      const roundTypeData = await roundTypeResponse.json();
+      const totalArrows = roundTypeData.data.totalDozens * 12;
 
-      setCurrentScore({...responseData.data, totalArrows})
-      setActiveComponent('activeScorecard')
+      await setCurrentScore({ ...responseData.data, totalArrows });
+      await setCurrentScoreId(responseData.data._id)
     } catch (error) {
       console.error(`Failed to create new score: ${error}`);
     }
-    }
+  };
 
   const formik = useFormik({
     initialValues: {
@@ -103,17 +106,17 @@ const NewScoreForm = ({ setActiveComponent, setCurrentScore }) => {
       location: "",
       weather: "",
       notes: "",
-      archerProfile: ""
+      archerProfile: "",
     },
     onSubmit: async (values) => {
-      formik.setSubmitting(true)
+      formik.setSubmitting(true);
 
       try {
-        await createScore(values)
+        await createScore(values);
       } catch (error) {
-        throw new Error(error.message)
+        throw new Error(error.message);
       }
-      formik.setSubmitting(false)
+      formik.setSubmitting(false);
       // alert(JSON.stringify(values, null, 2));
     },
   });
@@ -145,24 +148,26 @@ const NewScoreForm = ({ setActiveComponent, setCurrentScore }) => {
           {/* Bow Type - Radio - Required */}
           <FormControl isRequired>
             <FormLabel>Bow Type</FormLabel>
-            <RadioGroup
+            <Select
               name="bowType"
-              onChange={(val) => {
+              onChange={(event) => {
+                const val = event.target.value;
                 formik.setFieldValue("archerProfile", val);
-                const selectedBowType = archerProfiles.find(profile => profile._id === val)?.bowType;
+                const selectedBowType = archerProfiles.find(
+                  (profile) => profile._id === val
+                )?.bowType;
                 formik.setFieldValue("bowType", selectedBowType || "");
                 formik.setFieldValue("equipment", "");
               }}
               value={formik.values.archerProfile}
             >
-              <Stack spacing={4} direction={"row"}>
-                {archerProfiles.map((profile, index) => (
-                  <Radio key={index} value={profile._id}>
-                    {profile.bowType}
-                  </Radio>
-                ))}
-              </Stack>
-            </RadioGroup>
+              <option value="" label="Select option" />
+              {archerProfiles.map((profile) => (
+                <option key={profile._id} value={profile._id}>
+                  {profile.bowType}
+                </option>
+              ))}
+            </Select>
           </FormControl>
 
           {/* Equipment - Select - Required */}
@@ -177,7 +182,8 @@ const NewScoreForm = ({ setActiveComponent, setCurrentScore }) => {
               {equipment
                 .filter(
                   (equip) =>
-                    equip.bowType.toLowerCase() === formik.values.bowType.toLowerCase()
+                    equip.bowType.toLowerCase() ===
+                    formik.values.bowType.toLowerCase()
                 )
                 .map((equip) => (
                   <option key={equip._id} value={equip._id}>
@@ -190,18 +196,19 @@ const NewScoreForm = ({ setActiveComponent, setCurrentScore }) => {
           {/* Round Type - Radio - Required */}
           <FormControl isRequired>
             <FormLabel>Round Type</FormLabel>
-            <RadioGroup
+            <Select
               name="scoreType"
-              onChange={(val) => formik.setFieldValue("scoreType", val)}
+              onChange={(event) =>
+                formik.setFieldValue("scoreType", event.target.value)
+              }
               value={formik.values.scoreType}
             >
-              <Stack spacing={4} direction={"row"}>
-                <Radio value="Practice">Practice</Radio>
-                <Radio value="Competition">Competition</Radio>
-                <Radio value="Head-to-Head">Head to Head</Radio>
-                <Radio value="League">League</Radio>
-              </Stack>
-            </RadioGroup>
+              <option value="" label="Select option" />
+              <option value="Practice">Practice</option>
+              <option value="Competition">Competition</option>
+              <option value="Head to Head">Head to Head</option>
+              <option value="League">League</option>
+            </Select>
           </FormControl>
 
           {/* Location - Input - Optional */}

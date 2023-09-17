@@ -56,7 +56,7 @@ export const deleteScore = async (req, res) => {
 
 export const searchScores = async (req, res) => {
   try {
-    const query = { ...req.body }
+    const query = { ...req.query }
     const scores = await Score.findMany(query)
     return sendDataResponse(res, 200, scores)
   } catch (error) {

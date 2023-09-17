@@ -9,6 +9,7 @@ import NewScoreForm from "../components/NewScoreForm";
 const Scores = () => {
   console.log('Scores Loaded')
 
+  const [currentScore, setCurrentScore] = useState(null)
   const [currentScoreId, setCurrentScoreId] = useState(null)
   const [userScores, setUserScores] = useState([]);
   const { getAccessTokenSilently } = useAuth0();
@@ -55,16 +56,16 @@ const Scores = () => {
   return (
     <Flex maxW="80vw" mx="auto" p={4} bg={'red.100'} height="100%">
       {/* ScoresLeftNav */}
-      <Box flex="1" maxW="30%" bg="gray.200" p={4} alignSelf={"start"} >
+      <Box flex="1" maxW="200px" bg="gray.200" p={4} alignSelf={"start"} >
         <ScoresLeftNav userScores={userScores} onScoreSelect={handleScoreSelection} />
       </Box>
 
       {/* ScoresContent */}
       <Box flex="1" p={4}>
         {currentScoreId ? (
-          <ScoresContent scoreId={currentScoreId} />
+          <ScoresContent scoreId={currentScoreId} currentScore={currentScore} setCurrentScore={setCurrentScore} />
         ) : (
-          <NewScoreForm />
+          <NewScoreForm setCurrentScore={setCurrentScore} setCurrentScoreId={setCurrentScoreId} />
         )}
       </Box>
     </Flex>

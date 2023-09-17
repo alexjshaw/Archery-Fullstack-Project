@@ -37,8 +37,8 @@ const scoreSchema = new mongoose.Schema({
   scoreType: {
     type: String,
     required: true,
-    enum: ['Practice', 'League', 'Head-to-Head', 'Competition'],
-    message: 'Round type must be either Practice, League, Head-to-Head or Competition'
+    enum: ['Practice', 'League', 'Head to Head', 'Competition'],
+    message: 'Round type must be either Practice, League, Head to Head or Competition'
   },
   completed: { type: Boolean, required: true, default: false },
   visible: { type: Boolean, required: true, default: true },
