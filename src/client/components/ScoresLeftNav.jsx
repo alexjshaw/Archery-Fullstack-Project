@@ -1,13 +1,18 @@
 import { Box, Button, Flex, Text, VStack, Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel } from "@chakra-ui/react";
-import React from "react";
+import React, { useMemo } from "react";
 
 const ScoresLeftNav = ({ userScores, onScoreSelect }) => {
+
+
   const filterAndSortScores = (completed) => {
     return userScores
       .filter((score) => score.completed === completed)
       .sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt))
       .slice(0, 3);
   };
+
+  const activeScores = useMemo(() => filterAndSortScores(false), [userScores]);
+  const recentScores = useMemo(() => filterAndSortScores(true), [userScores]);
 
   const renderScoreButtons = (scores) => {
     return scores.length > 0 ? (
@@ -39,35 +44,34 @@ const ScoresLeftNav = ({ userScores, onScoreSelect }) => {
   };
 
   const sections = [
-    { title: "Active Scores", scores: filterAndSortScores(false) },
-    { title: "Recent Scores", scores: filterAndSortScores(true) },
+    { title: "Active Scores", scores: activeScores },
+    { title: "Recent Scores", scores: recentScores },
   ];
 
-return (
-  <VStack spacing={4} align="center" w="100%">
-    <Button width="100%" whiteSpace="normal" height="auto" py={3} onClick={() => handleButtonClick(null)}>
-      New Score
-    </Button>
-    <Accordion allowToggle width="100%">
-      {sections.map((section) => (
-        <AccordionItem key={section.title}>
-          <h2>
-            <AccordionButton>
-              <Box flex="1" textAlign="center">
-                {section.title}
-              </Box>
-              <AccordionIcon />
-            </AccordionButton>
-          </h2>
-          <AccordionPanel pb={4}>
-            {renderScoreButtons(section.scores)}
-          </AccordionPanel>
-        </AccordionItem>
-      ))}
-    </Accordion>
-  </VStack>
-);
-
+  return (
+    <VStack spacing={4} align="center" w="100%">
+      <Button width="100%" whiteSpace="normal" height="auto" py={3} onClick={() => handleButtonClick(null)}>
+        New Score
+      </Button>
+      <Accordion allowToggle width="100%">
+        {sections.map((section) => (
+          <AccordionItem key={section.title}>
+            <h2>
+              <AccordionButton>
+                <Box flex="1" textAlign="center">
+                  {section.title}
+                </Box>
+                <AccordionIcon />
+              </AccordionButton>
+            </h2>
+            <AccordionPanel pb={4}>
+              {renderScoreButtons(section.scores)}
+            </AccordionPanel>
+          </AccordionItem>
+        ))}
+      </Accordion>
+    </VStack>
+  );
 };
 
 export default ScoresLeftNav;

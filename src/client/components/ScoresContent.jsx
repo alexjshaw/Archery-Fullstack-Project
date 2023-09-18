@@ -126,10 +126,6 @@ const ScoresContent = ({
     }
   };
 
-  const testFunction = () => {
-    console.log("currentScore", currentScore);
-  };
-
   if (!fetchComplete) {
     return <PageLoader />;
   }
@@ -147,7 +143,6 @@ const ScoresContent = ({
       />
       {/* <ScoreTotals currentScore={currentScore} /> */}
       <ArrowButtons handleButtonPress={handleButtonPress} />
-      <Button onClick={testFunction}>TEST</Button>
     </Flex>
   );
 };

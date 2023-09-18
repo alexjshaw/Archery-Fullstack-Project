@@ -20,11 +20,11 @@ import AuthContext from "../context/AuthContext";
 
 const NewScoreForm = ({ setCurrentScore, setCurrentScoreId }) => {
   const user = useContext(AuthContext);
-  const [roundTypes, setRoundTypes] = useState([])
-  const [bowTypes, setBowTypes] = useState([])
-  const [equipment, setEquipment] = useState([])
-  const [archerProfiles, setArcherProfiles] = useState([])
-  const { getAccessTokenSilently } = useAuth0()
+  const [roundTypes, setRoundTypes] = useState([]);
+  const [bowTypes, setBowTypes] = useState([]);
+  const [equipment, setEquipment] = useState([]);
+  const [archerProfiles, setArcherProfiles] = useState([]);
+  const { getAccessTokenSilently } = useAuth0();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -36,26 +36,20 @@ const NewScoreForm = ({ setCurrentScore, setCurrentScoreId }) => {
         },
       };
 
-      const roundTypesResponse = await fetch(
-        "http://localhost:3000/roundtype/search",
-        getOptions
-      );
+      const [roundTypesResponse, archerProfileResponse, equipmentNamesResponse] = await Promise.all([
+        fetch("http://localhost:3000/roundtype/search", getOptions),
+        fetch("http://localhost:3000/archerprofile", getOptions),
+        fetch("http://localhost:3000/equipment", getOptions)
+      ]);
+
       const roundTypesData = await roundTypesResponse.json();
       setRoundTypes(roundTypesData.data);
 
-      const archerProfileResponse = await fetch(
-        "http://localhost:3000/archerprofile",
-        getOptions
-      );
       const archerProfileData = await archerProfileResponse.json();
       setArcherProfiles(archerProfileData.data);
       const bowTypes = archerProfileData.data.map((profile) => profile.bowType);
       setBowTypes(bowTypes);
 
-      const equipmentNamesResponse = await fetch(
-        "http://localhost:3000/equipment",
-        getOptions
-      );
       const equipmentData = await equipmentNamesResponse.json();
       setEquipment(equipmentData.data);
     };
@@ -72,21 +66,21 @@ const NewScoreForm = ({ setCurrentScore, setCurrentScoreId }) => {
           Authorization: `Bearer ${token}`,
         },
       });
-  
+
       if (!roundTypeResponse.ok) {
         throw new Error("Failed to fetch round type");
       }
-  
+
       const roundTypeData = await roundTypeResponse.json();
-  
+
       const totalArrows = roundTypeData.data.totalDozens * 12;
-  
+
       const arrowValues = Array.from({ length: totalArrows }).map((_, index) => ({
         arrowNumber: index + 1,
         arrowScore: null,
         isX: false,
       }));
-  
+
       const scoreResponse = await fetch("http://localhost:3000/score", {
         method: "POST",
         headers: {
@@ -98,21 +92,20 @@ const NewScoreForm = ({ setCurrentScore, setCurrentScoreId }) => {
           arrowValues
         })
       });
-  
+
       if (!scoreResponse.ok) {
         throw new Error("Failed to create score");
       }
-  
+
       const scoreData = await scoreResponse.json();
-  
+
       setCurrentScore(scoreData);
       setCurrentScoreId(scoreData._id);
-  
+
     } catch (error) {
       console.error("There was a problem with the createScore function:", error.message);
     }
   };
-  
 
   const formik = useFormik({
     initialValues: {
@@ -134,7 +127,6 @@ const NewScoreForm = ({ setCurrentScore, setCurrentScoreId }) => {
         throw new Error(error.message);
       }
       formik.setSubmitting(false);
-      // alert(JSON.stringify(values, null, 2));
     },
   });
 
@@ -259,7 +251,15 @@ const NewScoreForm = ({ setCurrentScore, setCurrentScoreId }) => {
           </FormControl>
 
           {/* Submit Button */}
-          <Button type="submit">Submit</Button>
+          <Button
+            type="submit"
+            isLoading={formik.isSubmitting}
+            colorScheme="teal"
+            size="lg"
+            width="100%"
+          >
+            Start Score
+          </Button>
         </VStack>
       </form>
     </Box>
