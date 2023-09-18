@@ -54,7 +54,7 @@ const Scores = () => {
   };
 
   return (
-    <Flex maxW="80vw" mx="auto" p={4} height="100%">
+    <Flex maxW="90vw" mx="auto" p={4} height="100%">
       {/* ScoresLeftNav */}
       <Box flex="1" maxW="200px" p={4} alignSelf={"start"} >
         <ScoresLeftNav userScores={userScores} onScoreSelect={handleScoreSelection} />

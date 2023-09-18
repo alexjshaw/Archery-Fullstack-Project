@@ -213,8 +213,12 @@ const ArrowValues = ({ arrowValues }) => {
 
     return () => {
       // Cleanup event listeners on unmount
-      firstBoxRef.current.removeEventListener("scroll", handleFirstScroll);
-      secondBoxRef.current.removeEventListener("scroll", handleSecondScroll);
+      if (firstBoxRef.current) {
+        firstBoxRef.current.removeEventListener("scroll", handleFirstScroll);
+      }
+      if (secondBoxRef.current) {
+        secondBoxRef.current.removeEventListener("scroll", handleSecondScroll);
+      }
     };
   }, []);
 
@@ -233,8 +237,7 @@ const ArrowValues = ({ arrowValues }) => {
         bg={"gray.100"}
         borderRadius="md"
         ref={firstBoxRef}
-        minWidth="200px"
-        // maxWidth="240px"
+        maxWidth="240px"
         sx={{
           "::-webkit-scrollbar": {
             display: "none",
@@ -290,7 +293,7 @@ const ArrowValues = ({ arrowValues }) => {
         bg={"gray.100"}
         borderRadius="md"
         ref={secondBoxRef}
-        minWidth="220px"
+        maxWidth="260px"
         scrollbarGutter="stable"
       >
         <Flex direction="column" alignItems="center" justifyContent="center">
@@ -376,7 +379,7 @@ const ArrowValues = ({ arrowValues }) => {
 
 const ArrowButtons = ({ handleButtonPress }) => {
   return (
-    <Flex wrap="wrap" spacing={2} border={"solid 2px blue"} bg={"blue.200"}>
+    <Flex wrap="wrap" spacing={2} border={"solid 2px blue"} bg={"blue.200"} w={"fit-content"}>
       {Array.from({ length: 10 }, (_, i) => i + 1).map((number) => (
         <Button key={number} onClick={() => handleButtonPress(number)}>
           {number}
