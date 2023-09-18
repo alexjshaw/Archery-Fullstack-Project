@@ -12,6 +12,7 @@ const Scores = () => {
   const [currentScore, setCurrentScore] = useState(null)
   const [currentScoreId, setCurrentScoreId] = useState(null)
   const [userScores, setUserScores] = useState([]);
+  const [totalArrows, setTotalArrows] = useState()
   const { getAccessTokenSilently } = useAuth0();
 
   useEffect(() => {
@@ -63,9 +64,9 @@ const Scores = () => {
       {/* ScoresContent */}
       <Box flex="1" p={4}>
         {currentScoreId ? (
-          <ScoresContent scoreId={currentScoreId} currentScore={currentScore} setCurrentScore={setCurrentScore} />
+          <ScoresContent scoreId={currentScoreId} currentScore={currentScore} setCurrentScore={setCurrentScore} totalArrows={totalArrows} />
         ) : (
-          <NewScoreForm setCurrentScore={setCurrentScore} setCurrentScoreId={setCurrentScoreId} />
+          <NewScoreForm setCurrentScore={setCurrentScore} setCurrentScoreId={setCurrentScoreId} setTotalArrows={setTotalArrows} />
         )}
       </Box>
     </Flex>

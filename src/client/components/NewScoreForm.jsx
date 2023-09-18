@@ -18,13 +18,13 @@ import PageLoader from "../components/PageLoader";
 import { useAuth0 } from "@auth0/auth0-react";
 import AuthContext from "../context/AuthContext";
 
-const NewScoreForm = ({ setCurrentScore, setCurrentScoreId }) => {
+const NewScoreForm = ({ setCurrentScore, setCurrentScoreId, setTotalArrows }) => {
   const user = useContext(AuthContext);
-  const [roundTypes, setRoundTypes] = useState([]);
-  const [bowTypes, setBowTypes] = useState([]);
-  const [equipment, setEquipment] = useState([]);
-  const [archerProfiles, setArcherProfiles] = useState([]);
-  const { getAccessTokenSilently } = useAuth0();
+  const [roundTypes, setRoundTypes] = useState([])
+  const [bowTypes, setBowTypes] = useState([])
+  const [equipment, setEquipment] = useState([])
+  const [archerProfiles, setArcherProfiles] = useState([])
+  const { getAccessTokenSilently } = useAuth0()
 
   useEffect(() => {
     const fetchData = async () => {
@@ -90,7 +90,8 @@ const NewScoreForm = ({ setCurrentScore, setCurrentScoreId }) => {
       const roundTypeData = await roundTypeResponse.json();
       const totalArrows = roundTypeData.data.totalDozens * 12;
 
-      await setCurrentScore({ ...responseData.data, totalArrows });
+      await setTotalArrows(totalArrows)
+      await setCurrentScore({...responseData.data});
       await setCurrentScoreId(responseData.data._id)
     } catch (error) {
       console.error(`Failed to create new score: ${error}`);
