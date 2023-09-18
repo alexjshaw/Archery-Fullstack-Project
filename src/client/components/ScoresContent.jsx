@@ -233,8 +233,15 @@ const ArrowValues = ({ arrowValues }) => {
         bg={"gray.100"}
         borderRadius="md"
         ref={firstBoxRef}
+        minWidth="200px"
+        // maxWidth="240px"
+        sx={{
+          "::-webkit-scrollbar": {
+            display: "none",
+          },
+        }}
       >
-        <Flex direction="column">
+        <Flex direction="column" alignItems="center" justifyContent="center">
           {Array.from({ length: totalEnds }).map((_, rowIndex) => {
             const currentEnd = arrowValues.slice(
               rowIndex * 6,
@@ -246,16 +253,31 @@ const ArrowValues = ({ arrowValues }) => {
                 p={2}
                 flex="1"
                 borderBottom={"solid 1px black"}
+                justifyContent="center" // Center the 180px wide area
               >
-                {currentEnd.map((arrow, valueIndex) => (
-                  <Text key={valueIndex} mx={1} fontSize="xl">
-                    {arrow.arrowScore === null
-                      ? "-"
-                      : arrow.isX
-                      ? "X"
-                      : arrow.arrowScore}
-                  </Text>
-                ))}
+                <Flex
+                  width="180px" // Set width for the container
+                  justifyContent="space-between" // Evenly spread the columns
+                >
+                  {currentEnd.map((arrow, valueIndex) => (
+                    <Flex
+                      key={valueIndex}
+                      width="30px" // Width for each column (180px / 6)
+                      alignItems="center"
+                      justifyContent="center"
+                    >
+                      <Text fontSize="xl">
+                        {arrow.arrowScore === null
+                          ? "-"
+                          : arrow.arrowScore === 0
+                          ? "M"
+                          : arrow.isX
+                          ? "X"
+                          : arrow.arrowScore}
+                      </Text>
+                    </Flex>
+                  ))}
+                </Flex>
               </Flex>
             );
           })}
@@ -268,37 +290,81 @@ const ArrowValues = ({ arrowValues }) => {
         bg={"gray.100"}
         borderRadius="md"
         ref={secondBoxRef}
+        minWidth="220px"
+        scrollbarGutter="stable"
       >
-        <Flex direction="column">
+        <Flex direction="column" alignItems="center" justifyContent="center">
           {Array.from({ length: totalEnds }).map((_, rowIndex) => {
             const currentEnd = arrowValues.slice(
               rowIndex * 6,
               (rowIndex + 1) * 6
             );
-            const sum = currentEnd.reduce(
-              (acc, arrow) => acc + (arrow.arrowScore || 0),
-              0
+            const allNull = currentEnd.every(
+              (arrow) => arrow.arrowScore === null
             );
-            const tensCount = currentEnd.filter(
-              (arrow) => arrow.arrowScore === 10
-            ).length;
-            const xCount = currentEnd.filter((arrow) => arrow.isX).length;
-            const average = sum / 6;
+            const sum = allNull
+              ? "-"
+              : currentEnd.reduce(
+                  (acc, arrow) => acc + (arrow.arrowScore || 0),
+                  0
+                );
+            const tensCount = allNull
+              ? "-"
+              : currentEnd.filter((arrow) => arrow.arrowScore === 10).length;
+            const xCount = allNull
+              ? "-"
+              : currentEnd.filter((arrow) => arrow.isX).length;
+            const average = allNull ? "-" : (sum / 6).toFixed(2);
 
             return (
-              <Flex key={rowIndex} p={2} flex="1" borderBottom={"solid 1px black"}>
-                <Text mx={1} fontSize="xl">
-                  {sum}
-                </Text>
-                <Text mx={1} fontSize="xl">
-                  {tensCount}
-                </Text>
-                <Text mx={1} fontSize="xl">
-                  {xCount}
-                </Text>
-                <Text mx={1} fontSize="xl">
-                  {average.toFixed(2)}
-                </Text>
+              <Flex
+                key={rowIndex}
+                p={2}
+                flex="1"
+                borderBottom={"solid 1px black"}
+                justifyContent="center" // Center the 200px wide area
+              >
+                <Flex
+                  width="200px" // Set width for the container
+                  justifyContent="space-between" // Evenly spread the columns
+                >
+                  <Flex
+                    width="50px" // Width for each column (200px / 4)
+                    alignItems="center"
+                    justifyContent="center"
+                  >
+                    <Text mx={1} fontSize="xl">
+                      {sum}
+                    </Text>
+                  </Flex>
+                  <Flex
+                    width="50px"
+                    alignItems="center"
+                    justifyContent="center"
+                  >
+                    <Text mx={1} fontSize="xl">
+                      {tensCount}
+                    </Text>
+                  </Flex>
+                  <Flex
+                    width="50px"
+                    alignItems="center"
+                    justifyContent="center"
+                  >
+                    <Text mx={1} fontSize="xl">
+                      {xCount}
+                    </Text>
+                  </Flex>
+                  <Flex
+                    width="50px"
+                    alignItems="center"
+                    justifyContent="center"
+                  >
+                    <Text mx={1} fontSize="xl">
+                      {average}
+                    </Text>
+                  </Flex>
+                </Flex>
               </Flex>
             );
           })}
