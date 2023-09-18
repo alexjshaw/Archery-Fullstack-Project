@@ -16,12 +16,9 @@ import PageLoader from "./PageLoader";
 const ScoresContent = ({
   scoreId,
   currentScore,
-  setCurrentScore,
-  totalArrows,
+  setCurrentScore
 }) => {
   console.log("ScoresContent loaded");
-  const totalEnds = 2;
-
   const [fetchComplete, setFetchComplete] = useState(false);
   const { getAccessTokenSilently } = useAuth0();
 
@@ -46,20 +43,8 @@ const ScoresContent = ({
         const result = await response.json();
 
         if (result.status === "success") {
-          const fetchedScore = result.data[0]; // Assuming result.data is an array
-          if (
-            !fetchedScore.arrowValues ||
-            fetchedScore.arrowValues.length === 0
-          ) {
-            fetchedScore.arrowValues = [...Array(totalEnds * 6)].map(
-              (_, index) => ({
-                arrowNumber: index + 1,
-                arrowScore: null,
-                isX: false,
-              })
-            );
-          }
-          setCurrentScore(fetchedScore);
+          const fetchedScore = result.data[0]
+          setCurrentScore(fetchedScore)
         } else {
           console.error("Failed to fetch scores:", result);
         }
@@ -97,7 +82,6 @@ const ScoresContent = ({
       }
 
       if (value === "X") {
-        updatedScore.scored10s += 1;
         updatedScore.scoredXs += 1;
       }
     }
@@ -105,7 +89,7 @@ const ScoresContent = ({
     const scoredArrows = updatedScore.arrowValues.filter(
       (arrow) => arrow.arrowScore !== null
     );
-    if (scoredArrows.length === totalArrows) {
+    if (scoredArrows.length === currentScore.arrowValues.length) {
       updatedScore.completed = true;
     }
 
@@ -160,7 +144,6 @@ const ScoresContent = ({
     >
       <ArrowValues
         arrowValues={currentScore.arrowValues}
-        totalEnds={totalEnds}
       />
       {/* <ScoreTotals currentScore={currentScore} /> */}
       <ArrowButtons handleButtonPress={handleButtonPress} />
@@ -210,7 +193,8 @@ const ScoreInfo = () => {
   );
 };
 
-const ArrowValues = ({ arrowValues, totalEnds }) => {
+const ArrowValues = ({ arrowValues }) => {
+  const totalEnds = arrowValues.length/6
   return (
     <Flex
       direction="column"

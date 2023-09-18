@@ -18,7 +18,7 @@ import PageLoader from "../components/PageLoader";
 import { useAuth0 } from "@auth0/auth0-react";
 import AuthContext from "../context/AuthContext";
 
-const NewScoreForm = ({ setCurrentScore, setCurrentScoreId, setTotalArrows }) => {
+const NewScoreForm = ({ setCurrentScore, setCurrentScoreId }) => {
   const user = useContext(AuthContext);
   const [roundTypes, setRoundTypes] = useState([])
   const [bowTypes, setBowTypes] = useState([])
@@ -64,39 +64,55 @@ const NewScoreForm = ({ setCurrentScore, setCurrentScoreId, setTotalArrows }) =>
   }, []);
 
   const createScore = async (values) => {
-    const token = await getAccessTokenSilently();
-
     try {
-      const response = await fetch("http://localhost:3000/score", {
-        method: "POST",
+      const token = await getAccessTokenSilently();
+      const roundTypeResponse = await fetch(`http://localhost:3000/roundtype/${values.roundType}`, {
+        method: "GET",
         headers: {
-          "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(values),
       });
-      const responseData = await response.json();
-      const roundTypeId = responseData.data.roundType;
-
-      const roundTypeResponse = await fetch(
-        `http://localhost:3000/roundtype/${roundTypeId}`,
-        {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+  
+      if (!roundTypeResponse.ok) {
+        throw new Error("Failed to fetch round type");
+      }
+  
       const roundTypeData = await roundTypeResponse.json();
+  
       const totalArrows = roundTypeData.data.totalDozens * 12;
-
-      await setTotalArrows(totalArrows)
-      await setCurrentScore({...responseData.data});
-      await setCurrentScoreId(responseData.data._id)
+  
+      const arrowValues = Array.from({ length: totalArrows }).map((_, index) => ({
+        arrowNumber: index + 1,
+        arrowScore: null,
+        isX: false,
+      }));
+  
+      const scoreResponse = await fetch("http://localhost:3000/score", {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          ...values,
+          arrowValues
+        })
+      });
+  
+      if (!scoreResponse.ok) {
+        throw new Error("Failed to create score");
+      }
+  
+      const scoreData = await scoreResponse.json();
+  
+      setCurrentScore(scoreData);
+      setCurrentScoreId(scoreData._id);
+  
     } catch (error) {
-      console.error(`Failed to create new score: ${error}`);
+      console.error("There was a problem with the createScore function:", error.message);
     }
   };
+  
 
   const formik = useFormik({
     initialValues: {

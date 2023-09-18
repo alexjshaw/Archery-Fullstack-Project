@@ -30,10 +30,6 @@ export default class Score {
         throw new Error('Invalid round selected')
       }
 
-      const arrowsRemaining = roundType.totalDozens * 12
-
-      query.arrowsRemaining = arrowsRemaining
-
       const newScore = new ScoreModel(query)
       await newScore.save()
       roundType.scores.push(newScore._id)

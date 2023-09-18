@@ -2,7 +2,7 @@ import mongoose from 'mongoose'
 
 const arrowSchema = new mongoose.Schema({
   arrowNumber: { type: Number, required: true, min: 1 },
-  arrowScore: { type: Number, required: true, min: 0, max: 10 },
+  arrowScore: { type: Number, min: 0, max: 10 },
   isX: { type: Boolean, required: true, default: false }
 })
 
