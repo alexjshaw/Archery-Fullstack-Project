@@ -53,6 +53,14 @@ const Scores = () => {
     setCurrentScoreId(id);
   };
 
+  const handleScoreCreated = (id) => {
+    console.log('id received', id)
+    setCurrentScoreId(id);
+  };
+
+  console.log('scores currentScore', currentScore)
+  console.log('scores currentScoreId', currentScoreId)
+
   return (
     <Flex maxW="80vw" mx="auto" p={4} bg={'red.100'} height="100%">
       {/* ScoresLeftNav */}

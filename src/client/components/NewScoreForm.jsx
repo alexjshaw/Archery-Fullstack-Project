@@ -99,8 +99,8 @@ const NewScoreForm = ({ setCurrentScore, setCurrentScoreId }) => {
 
       const scoreData = await scoreResponse.json();
 
-      setCurrentScore(scoreData);
-      setCurrentScoreId(scoreData._id);
+      setCurrentScore(scoreData.data);
+      setCurrentScoreId(scoreData.data._id);
 
     } catch (error) {
       console.error("There was a problem with the createScore function:", error.message);
