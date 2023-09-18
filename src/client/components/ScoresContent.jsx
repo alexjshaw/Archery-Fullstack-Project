@@ -9,15 +9,11 @@ import {
   AccordionIcon,
   AccordionPanel,
 } from "@chakra-ui/react";
-import { useState, useEffect, Fragment } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import PageLoader from "./PageLoader";
 
-const ScoresContent = ({
-  scoreId,
-  currentScore,
-  setCurrentScore
-}) => {
+const ScoresContent = ({ scoreId, currentScore, setCurrentScore }) => {
   console.log("ScoresContent loaded");
   const [fetchComplete, setFetchComplete] = useState(false);
   const { getAccessTokenSilently } = useAuth0();
@@ -43,8 +39,8 @@ const ScoresContent = ({
         const result = await response.json();
 
         if (result.status === "success") {
-          const fetchedScore = result.data[0]
-          setCurrentScore(fetchedScore)
+          const fetchedScore = result.data[0];
+          setCurrentScore(fetchedScore);
         } else {
           console.error("Failed to fetch scores:", result);
         }
@@ -138,9 +134,7 @@ const ScoresContent = ({
       height="100%"
       gap={4}
     >
-      <ArrowValues
-        arrowValues={currentScore.arrowValues}
-      />
+      <ArrowValues arrowValues={currentScore.arrowValues} />
       {/* <ScoreTotals currentScore={currentScore} /> */}
       <ArrowButtons handleButtonPress={handleButtonPress} />
     </Flex>
@@ -189,31 +183,127 @@ const ScoreInfo = () => {
 };
 
 const ArrowValues = ({ arrowValues }) => {
-  const totalEnds = arrowValues.length/6
+  const totalEnds = arrowValues.length / 6;
+
+  const firstBoxRef = useRef(null);
+  const secondBoxRef = useRef(null);
+
+  let isSyncingFirstScroll = false;
+  let isSyncingSecondScroll = false;
+
+  useEffect(() => {
+    const handleFirstScroll = () => {
+      if (!isSyncingFirstScroll) {
+        isSyncingSecondScroll = true;
+        secondBoxRef.current.scrollTop = firstBoxRef.current.scrollTop;
+      }
+      isSyncingFirstScroll = false;
+    };
+
+    const handleSecondScroll = () => {
+      if (!isSyncingSecondScroll) {
+        isSyncingFirstScroll = true;
+        firstBoxRef.current.scrollTop = secondBoxRef.current.scrollTop;
+      }
+      isSyncingSecondScroll = false;
+    };
+
+    firstBoxRef.current.addEventListener("scroll", handleFirstScroll);
+    secondBoxRef.current.addEventListener("scroll", handleSecondScroll);
+
+    return () => {
+      // Cleanup event listeners on unmount
+      firstBoxRef.current.removeEventListener("scroll", handleFirstScroll);
+      secondBoxRef.current.removeEventListener("scroll", handleSecondScroll);
+    };
+  }, []);
+
   return (
     <Flex
-      direction="column"
+      direction="row"
       flex="1"
       mb={4}
       overflowY="auto"
-      border={"solid 2px red"}
-      bg={"blue.100"}
+      gap={6}
+      borderRadius="md"
     >
-      {Array.from({ length: totalEnds }).map((_, rowIndex) => (
-        <Flex key={rowIndex} mb={2} border="1px solid black" p={2} flex="1">
-          {arrowValues
-            .slice(rowIndex * 6, (rowIndex + 1) * 6)
-            .map((arrow, valueIndex) => (
-              <Text key={valueIndex} mx={1} fontSize="xl">
-                {arrow.arrowScore === null
-                  ? "-"
-                  : arrow.isX
-                  ? "X"
-                  : arrow.arrowScore}
-              </Text>
-            ))}
+      <Box
+        flex="1"
+        overflowY="auto"
+        bg={"gray.100"}
+        borderRadius="md"
+        ref={firstBoxRef}
+      >
+        <Flex direction="column">
+          {Array.from({ length: totalEnds }).map((_, rowIndex) => {
+            const currentEnd = arrowValues.slice(
+              rowIndex * 6,
+              (rowIndex + 1) * 6
+            );
+            return (
+              <Flex
+                key={rowIndex}
+                p={2}
+                flex="1"
+                borderBottom={"solid 1px black"}
+              >
+                {currentEnd.map((arrow, valueIndex) => (
+                  <Text key={valueIndex} mx={1} fontSize="xl">
+                    {arrow.arrowScore === null
+                      ? "-"
+                      : arrow.isX
+                      ? "X"
+                      : arrow.arrowScore}
+                  </Text>
+                ))}
+              </Flex>
+            );
+          })}
         </Flex>
-      ))}
+      </Box>
+
+      <Box
+        flex="1"
+        overflowY="auto"
+        bg={"gray.100"}
+        borderRadius="md"
+        ref={secondBoxRef}
+      >
+        <Flex direction="column">
+          {Array.from({ length: totalEnds }).map((_, rowIndex) => {
+            const currentEnd = arrowValues.slice(
+              rowIndex * 6,
+              (rowIndex + 1) * 6
+            );
+            const sum = currentEnd.reduce(
+              (acc, arrow) => acc + (arrow.arrowScore || 0),
+              0
+            );
+            const tensCount = currentEnd.filter(
+              (arrow) => arrow.arrowScore === 10
+            ).length;
+            const xCount = currentEnd.filter((arrow) => arrow.isX).length;
+            const average = sum / 6;
+
+            return (
+              <Flex key={rowIndex} p={2} flex="1" borderBottom={"solid 1px black"}>
+                <Text mx={1} fontSize="xl">
+                  {sum}
+                </Text>
+                <Text mx={1} fontSize="xl">
+                  {tensCount}
+                </Text>
+                <Text mx={1} fontSize="xl">
+                  {xCount}
+                </Text>
+                <Text mx={1} fontSize="xl">
+                  {average.toFixed(2)}
+                </Text>
+              </Flex>
+            );
+          })}
+        </Flex>
+      </Box>
     </Flex>
   );
 };

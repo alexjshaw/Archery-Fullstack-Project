@@ -39,7 +39,6 @@ const ScoresLeftNav = ({ userScores, onScoreSelect }) => {
   };
 
   const handleButtonClick = (id) => {
-    console.log(id);
     onScoreSelect(id);
   };
 
