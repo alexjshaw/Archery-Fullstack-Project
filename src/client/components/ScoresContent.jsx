@@ -8,6 +8,7 @@ import {
   AccordionButton,
   AccordionIcon,
   AccordionPanel,
+  Grid
 } from "@chakra-ui/react";
 import { useState, useEffect, useRef } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
@@ -133,6 +134,7 @@ const ScoresContent = ({ scoreId, currentScore, setCurrentScore }) => {
       mb={4}
       height="100%"
       gap={4}
+      margin={"auto"}
     >
       <ArrowValues arrowValues={currentScore.arrowValues} />
       {/* <ScoreTotals currentScore={currentScore} /> */}
@@ -293,7 +295,7 @@ const ArrowValues = ({ arrowValues }) => {
         bg={"gray.100"}
         borderRadius="md"
         ref={secondBoxRef}
-        maxWidth="260px"
+        maxWidth="220px"
         scrollbarGutter="stable"
       >
         <Flex direction="column" alignItems="center" justifyContent="center">
@@ -317,7 +319,9 @@ const ArrowValues = ({ arrowValues }) => {
             const xCount = allNull
               ? "-"
               : currentEnd.filter((arrow) => arrow.isX).length;
-            const average = allNull ? "-" : (sum / 6).toFixed(2);
+            const average = allNull 
+            ? "-" 
+            : parseFloat((sum / 6).toFixed(2))
 
             return (
               <Flex
@@ -328,11 +332,11 @@ const ArrowValues = ({ arrowValues }) => {
                 justifyContent="center" // Center the 200px wide area
               >
                 <Flex
-                  width="200px" // Set width for the container
+                  width="160px" // Set width for the container
                   justifyContent="space-between" // Evenly spread the columns
                 >
                   <Flex
-                    width="50px" // Width for each column (200px / 4)
+                    width="40px" // Width for each column (200px / 4)
                     alignItems="center"
                     justifyContent="center"
                   >
@@ -379,15 +383,28 @@ const ArrowValues = ({ arrowValues }) => {
 
 const ArrowButtons = ({ handleButtonPress }) => {
   return (
-    <Flex wrap="wrap" spacing={2} border={"solid 2px blue"} bg={"blue.200"} w={"fit-content"}>
-      {Array.from({ length: 10 }, (_, i) => i + 1).map((number) => (
-        <Button key={number} onClick={() => handleButtonPress(number)}>
-          {number}
+    <Box maxW="484px" w="100%" border={"solid 2px blue"} bg={"blue.200"}>
+      <Grid templateColumns="repeat(6, 1fr)" gap={5}>
+        <Button h="40px" onClick={() => handleButtonPress("M")}>
+          M
         </Button>
-      ))}
-      <Button onClick={() => handleButtonPress("M")}>M</Button>
-      <Button onClick={() => handleButtonPress("X")}>X</Button>
-    </Flex>
+        {Array.from({ length: 5 }, (_, i) => i + 1).map((number) => (
+          <Button h="40px" onClick={() => handleButtonPress(number)} key={number}>
+            {number}
+          </Button>
+        ))}
+      </Grid>
+      <Grid templateColumns="repeat(6, 1fr)" gap={5} mt={2}>
+        {Array.from({ length: 5 }, (_, i) => i + 6).map((number) => (
+          <Button h="40px" onClick={() => handleButtonPress(number)} key={number}>
+            {number}
+          </Button>
+        ))}
+        <Button h="40px" onClick={() => handleButtonPress("X")}>
+          X
+        </Button>
+      </Grid>
+    </Box>
   );
 };
 

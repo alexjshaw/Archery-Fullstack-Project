@@ -131,7 +131,7 @@ const NewScoreForm = ({ setCurrentScore, setCurrentScoreId }) => {
   });
 
   return (
-    <Box border={"1px"} borderColor={"gray.200"} mb={4} p={4} boxShadow="lg">
+    <Box border={"1px"} borderColor={"gray.200"} mb={4} p={4} boxShadow="lg" minW={"400px"} maxW={"600px"}>
       <Heading size={"lg"} mb={4} textAlign="center">
         Start a New Score
       </Heading>
