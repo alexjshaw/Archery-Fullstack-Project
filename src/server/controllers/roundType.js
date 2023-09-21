@@ -37,6 +37,15 @@ export const getRoundTypeById = async (req, res) => {
   }
 }
 
+export const returnRoundTypeNames = async (req, res) => {
+  try {
+    const result = await RoundType.returnRoundTypeNames()
+    return sendDataResponse(res, 200, result)
+  } catch (error) {
+    return sendErrorResponse(res, 400, error.message)
+  }
+}
+
 export const searchRoundType = async (req, res) => {
   try {
     const { name, type, minTotalDozens = 0, maxTotalDozens = 48, minDistance, maxDistance } = req.body

@@ -2,9 +2,9 @@ import React, { useEffect, useState, Fragment, useContext } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import AuthContext from "../context/AuthContext";
 import PageLoader from "../components/PageLoader";
-import RegistrationForm from "../components/RegistrationForm";
+import RegistrationForm from "../components/dashboard/RegistrationForm";
 
-const Dashboard = () => {
+const DashboardView = () => {
   console.log('Dashboard Loaded')
 
   const { isAuthenticated, user, profileComplete, updateProfileComplete } = useContext(AuthContext);
@@ -56,7 +56,7 @@ const Dashboard = () => {
   );
 }
 
-export default Dashboard;
+export default DashboardView;
 
 /*
   function logToken() {

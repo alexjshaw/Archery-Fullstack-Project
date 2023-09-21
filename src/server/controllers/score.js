@@ -43,6 +43,7 @@ export const updateScore = async (req, res) => {
 }
 
 export const deleteScore = async (req, res) => {
+  console.log('deleteScore running')
   try {
     const scoreId = req.params.id
     const result = await Score.deleteScore(req.mongo_id, scoreId)

@@ -1,12 +1,11 @@
 import { withAuthenticationRequired } from "@auth0/auth0-react";
 import React, { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import PageLoader from "./PageLoader";
+import PageLoader from "../components/PageLoader";
 import AuthContext from "../context/AuthContext";
-import NavBar from "./NavBar";
 import { Box } from "@chakra-ui/react";
 
-export const AuthenticationGuard = ({ component, isDashboard = false }) => {
+const AuthenticationGuard = ({ component, isDashboard = false }) => {
   console.log('AuthenticationGuard Loaded')
   const navigate = useNavigate();
   const { profileComplete } = useContext(AuthContext);
@@ -32,3 +31,5 @@ export const AuthenticationGuard = ({ component, isDashboard = false }) => {
 
   return <Component />;
 };
+
+export default AuthenticationGuard

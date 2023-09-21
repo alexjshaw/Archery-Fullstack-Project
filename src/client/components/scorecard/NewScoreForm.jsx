@@ -14,9 +14,8 @@ import {
   VStack,
   Stack,
 } from "@chakra-ui/react";
-import PageLoader from "../components/PageLoader";
 import { useAuth0 } from "@auth0/auth0-react";
-import AuthContext from "../context/AuthContext";
+import AuthContext from "../../context/AuthContext";
 
 const NewScoreForm = ({ setCurrentScore, setCurrentScoreId }) => {
   const user = useContext(AuthContext);
@@ -47,6 +46,7 @@ const NewScoreForm = ({ setCurrentScore, setCurrentScoreId }) => {
 
       const archerProfileData = await archerProfileResponse.json();
       setArcherProfiles(archerProfileData.data);
+      
       const bowTypes = archerProfileData.data.map((profile) => profile.bowType);
       setBowTypes(bowTypes);
 
@@ -131,12 +131,12 @@ const NewScoreForm = ({ setCurrentScore, setCurrentScoreId }) => {
   });
 
   return (
-    <Box border={"1px"} borderColor={"gray.200"} mb={4} p={4} boxShadow="lg" minW={"400px"} maxW={"600px"}>
+    <Box border={"1px"} borderColor={"gray.200"} p={4} boxShadow="lg" minW={"400px"} maxW={"600px"} w={"100%"} >
       <Heading size={"lg"} mb={4} textAlign="center">
         Start a New Score
       </Heading>
       <form onSubmit={formik.handleSubmit}>
-        <VStack spacing={4} alignItems="center">
+        <VStack spacing={2} alignItems="center">
           {/* Round - Select - Required */}
           <FormControl isRequired>
             <FormLabel>Round</FormLabel>

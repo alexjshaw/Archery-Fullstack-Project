@@ -1,8 +1,8 @@
 import React, { Fragment, useContext } from "react";
-import Hero from "../components/Hero";
-import HomeContent from "../components/HomeContent";
+import Hero from "../components/home/Hero";
+import HomeContent from "../components/home/HomeContent";
 
-const Home = () => {
+const HomeView = () => {
   console.log("Home Loaded");
 
   return (
@@ -14,4 +14,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default HomeView;

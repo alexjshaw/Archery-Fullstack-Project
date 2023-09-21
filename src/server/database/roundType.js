@@ -34,6 +34,18 @@ export default class RoundType {
     }
   }
 
+  static async returnRoundTypeNames (query = {}) {
+    try {
+      const roundType = await RoundTypeModel.find(query).select('_id name')
+      if (!roundType || roundType.length === 0) {
+        throw new Error('No RoundType found')
+      }
+      return roundType
+    } catch (error) {
+      throw new Error(error.message)
+    }
+  }
+
   static async updateRoundType (roundTypeId, userId, update) {
     try {
       const roundType = await RoundTypeModel.findOneAndUpdate(

@@ -1,9 +1,17 @@
-import { Box, Button, Flex, Text, VStack, Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Text,
+  VStack,
+  Accordion,
+  AccordionButton,
+  AccordionIcon,
+  AccordionItem,
+  AccordionPanel,
+} from "@chakra-ui/react";
 import React, { useMemo } from "react";
 
-const ScoresLeftNav = ({ userScores, onScoreSelect }) => {
-
-
+const ScorecardNav = ({ userScores, onScoreSelect }) => {
   const filterAndSortScores = (completed) => {
     return userScores
       .filter((score) => score.completed === completed)
@@ -49,7 +57,13 @@ const ScoresLeftNav = ({ userScores, onScoreSelect }) => {
 
   return (
     <VStack spacing={4} align="center" w="100%">
-      <Button width="100%" whiteSpace="normal" height="auto" py={3} onClick={() => handleButtonClick(null)}>
+      <Button
+        width="100%"
+        whiteSpace="normal"
+        height="auto"
+        py={3}
+        onClick={() => handleButtonClick(null)}
+      >
         New Score
       </Button>
       <Accordion allowToggle width="100%">
@@ -73,4 +87,4 @@ const ScoresLeftNav = ({ userScores, onScoreSelect }) => {
   );
 };
 
-export default ScoresLeftNav;
+export default ScorecardNav;

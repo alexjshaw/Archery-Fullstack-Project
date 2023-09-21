@@ -74,16 +74,27 @@ export default class Score {
     }
   }
 
-  static async deleteScore (userId, scoreId) {
+  static async deleteScore(userId, scoreId) {
     try {
-      const result = await ScoreModel.findByIdAndUpdate({
+      const score = await ScoreModel.findOne({
         _id: scoreId,
         createdBy: userId
-      },
-      { $set: { visible: false } })
-      return result
+      });
+  
+      if (!score) {
+        throw new Error('Score not found');
+      }
+  
+      if (score.completed === true) {
+        const result = await ScoreModel.findByIdAndUpdate(scoreId, { $set: { visible: false } });
+        return result;
+      } else {
+        const result = await ScoreModel.findByIdAndDelete(scoreId);
+        return result;
+      }
+  
     } catch (error) {
-      throw new Error(error.message)
+      throw new Error(error.message);
     }
   }
 

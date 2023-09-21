@@ -1,78 +1,29 @@
 import {
   Box,
   Flex,
-  Text,
   IconButton,
-  Button,
   Image,
   Stack,
   HStack,
-  Collapse,
-  Icon,
-  Menu,
-  MenuButton,
-  Avatar,
-  MenuList,
-  MenuItem,
-  MenuDivider,
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
   useColorModeValue,
-  useBreakpointValue,
   useDisclosure,
-  LinkBox,
-  LinkOverlay,
   Link
 } from "@chakra-ui/react";
 import {
   HamburgerIcon,
-  CloseIcon,
-  ChevronDownIcon,
-  ChevronRightIcon,
+  CloseIcon
 } from "@chakra-ui/icons";
-import logo from "../assets/logo-no-background.png";
-import LoginButton from "./Login";
-import LogoutButton from "./Logout";
-import SignupButton from "./Signup";
-import { useAuth0 } from "@auth0/auth0-react";
+import logo from "../../assets/logo-no-background.png";
+import LoginButton from "../Login";
+import LogoutButton from "../Logout";
+import SignupButton from "../Signup";
 import { useContext } from "react";
-// import { useAuth } from "../utils/AuthContext";
 import { Link as ReactRouterLink } from "react-router-dom";
-import AuthContext from "../context/AuthContext";
+import AuthContext from "../../context/AuthContext";
 
 import { useNavigate } from "react-router-dom";
 
-// navBar background gray.600
 
-// const Links = ["Dashboard", "Scores", "History", "Profile"];
-const Links = [
-  { label: "Dashboard", route: "/dashboard" },
-  { label: "Scores", route: "/scores" },
-  { label: "History", route: "/history" },
-  { label: "Profile", route: "/profile" },
-];
-
-const NavLink = (props) => {
-  const { children, route } = props;
-
-  return (
-    <Box
-      color={"gray.200"}
-      as={Link}
-      to={route}
-      px={2}
-      py={1}
-      rounded={"md"}
-      _hover={{
-        textDecoration: "none",
-        bg: useColorModeValue("gray.200"),
-      }}
-    >
-      {children}
-    </Box>
-  );
-};
 
 const NavBar = () => {
   console.log("NavBar Loaded");
@@ -99,7 +50,7 @@ const NavBar = () => {
           </Link>
           <HStack as={'nav'} spacing={4} display={{ base: 'none', md: 'flex' }}>
             <Link as={ReactRouterLink} to="/dashboard">Dashboard</Link>
-            <Link as={ReactRouterLink} to="/scores">Scores</Link>
+            <Link as={ReactRouterLink} to="/scorecard">Scores</Link>
             <Link as={ReactRouterLink} to="/stats">Stats</Link>
             <Link as={ReactRouterLink} to="/profile">Profile</Link>
             <Link as={ReactRouterLink} to="/friends">Friends</Link>
@@ -134,32 +85,3 @@ const NavBar = () => {
 };
 
 export default NavBar;
-
-/*
-return (
-    <Flex as="nav" align="center" justify="space-between" padding="1.5rem" bg="blue.500" color="white">
-      <Link as={Link} to="/">
-        <Image src={logo} alt="Archery App Logo" maxH="40px" />
-      </Link>
-  
-      <HStack spacing={4}>
-        <Link as={Link} to="/dashboard">Dashboard</Link>
-        <Link as={Link} to="/scores">Scores</Link>
-        <Link as={Link} to="/stats">Stats</Link>
-        <Link as={Link} to="/profile">Profile</Link>
-        <Link as={Link} to="/friends">Friends</Link>
-      </HStack>
-  
-      <Box>
-        {!isAuthenticated ? (
-          <>
-            <LoginButton />
-            <SignupButton />
-          </>
-        ) : (
-          <LogoutButton />
-        )}
-      </Box>
-    </Flex>
-  );
-*/

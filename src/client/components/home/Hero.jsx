@@ -1,10 +1,10 @@
 import React, { useContext } from "react";
-import logo from "../assets/logo-no-background.png";
+import logo from "../../assets/logo-no-background.png";
 import { Box, Image, Text, Heading, Button } from "@chakra-ui/react";
-import LoginButton from "./Login";
-import SignupButton from "./Signup";
-import LogoutButton from "./Logout";
-import AuthContext from "../context/AuthContext";
+import LoginButton from "../Login";
+import SignupButton from "../Signup";
+import LogoutButton from "../Logout";
+import AuthContext from "../../context/AuthContext";
 import { useAuth0 } from "@auth0/auth0-react";
 
 const Hero = () => {
