@@ -1,19 +1,25 @@
 import { useState, useEffect } from "react";
-import { Flex, Box } from "@chakra-ui/react";
+import { Flex, Button } from "@chakra-ui/react";
 import { useAuth0 } from "@auth0/auth0-react";
 
 import ScorecardValues from "./ScorecardValues";
 import ScorecardButtons from "./ScorecardButtons";
+import ScorecardTotals from "./ScorecardTotals";
 import PageLoader from "../PageLoader";
 
 const Scorecard = ({ scoreId, currentScore, setCurrentScore }) => {
+  console.log('Scorecard')
   const [fetchComplete, setFetchComplete] = useState(false);
+  const [currentRound, setCurrentRound] = useState(null)
+  const [currentSightmarks, setCurrentSightmarks] = useState(null)
   const { getAccessTokenSilently } = useAuth0();
 
   useEffect(() => {
     const fetchScore = async () => {
       try {
         const token = await getAccessTokenSilently();
+  
+        // Initial fetch for the score
         const response = await fetch(
           `http://localhost:3000/score/?_id=${scoreId}`,
           {
@@ -23,16 +29,43 @@ const Scorecard = ({ scoreId, currentScore, setCurrentScore }) => {
             },
           }
         );
-
+  
         if (!response.ok) {
           throw new Error("Network response was not OK");
         }
-
+  
         const result = await response.json();
-
+  
         if (result.status === "success") {
           const fetchedScore = result.data[0];
           setCurrentScore(fetchedScore);
+  
+          // Fetch for the round type
+          const roundTypeResponse = await fetch(
+            `http://localhost:3000/roundtype/${fetchedScore.roundType}`,
+            {
+              method: "GET",
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+          const roundTypeResult = await roundTypeResponse.json();
+          setCurrentRound(roundTypeResult.data);
+  
+          // Fetch for the sightmark
+          const sightmarkResponse = await fetch(
+            `http://localhost:3000/sightmark/${fetchedScore.equipment}`,
+            {
+              method: "GET",
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+          const sightmarkResult = await sightmarkResponse.json();
+          setCurrentSightmarks(sightmarkResult.data);
+  
         } else {
           console.error("Failed to fetch scores:", result);
         }
@@ -42,9 +75,10 @@ const Scorecard = ({ scoreId, currentScore, setCurrentScore }) => {
           error.message
         );
       }
+
       setFetchComplete(true);
     };
-
+  
     if (!currentScore || currentScore._id !== scoreId) {
       fetchScore();
     } else {
@@ -118,10 +152,17 @@ const Scorecard = ({ scoreId, currentScore, setCurrentScore }) => {
     return <PageLoader />;
   }
 
+  const testFunction = () => {
+    console.log('currentScore', currentScore)
+    console.log('currentRound', currentRound)
+    console.log('currentSightmarks', currentSightmarks)
+  }
+
   return (
     <Flex direction="column" className="ScoresContent" mb={4} height="100%" justifyItems={"center"} gap={4} >
-      <ScorecardValues arrowValues={currentScore.arrowValues} currentScore={currentScore} />
-      <ScorecardButtons handleButtonPress={handleButtonPress} />
+      <ScorecardValues arrowValues={currentScore.arrowValues} currentScore={currentScore} currentRound={currentRound} currentSightmarks={currentSightmarks} />
+      <ScorecardTotals currentScore={currentScore} />
+      <ScorecardButtons handleButtonPress={handleButtonPress} currentRound={currentRound} />
     </Flex>
   );
 };

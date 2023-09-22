@@ -1,6 +1,6 @@
 import { Flex, Text, Box } from "@chakra-ui/react";
 
-const ScorecardRunningStats = ({ secondBoxRef, totalEnds, arrowValues }) => {
+const ScorecardRunningStats = ({ thirdBoxRef, totalEnds, arrowValues }) => {
   console.log('ScorecardRunningStats')
   return (
     <Box
@@ -8,12 +8,40 @@ const ScorecardRunningStats = ({ secondBoxRef, totalEnds, arrowValues }) => {
       overflowY="auto"
       bg={"gray.100"}
       borderRadius="md"
-      ref={secondBoxRef}
+      ref={thirdBoxRef}
       minWidth="200px"
-      maxWidth="260px"
-      scrollbarGutter="stable"
+      maxWidth="280px"
     >
       <Flex direction="column" alignItems="center" justifyContent="center">
+      <Flex
+    p={2}
+    width="100%"
+    borderBottom={"solid 1px black"}
+    justifyContent="center"
+  >
+    <Flex width="100%" justifyContent={"space-between"}>
+      <Flex width="50px" alignItems="center" justifyContent="center">
+        <Text mx={1} fontSize="md" fontWeight="bold">
+          Total
+        </Text>
+      </Flex>
+      <Flex width="50px" alignItems="center" justifyContent="center">
+        <Text mx={1} fontSize="md" fontWeight="bold">
+          10+X
+        </Text>
+      </Flex>
+      <Flex width="50px" alignItems="center" justifyContent="center">
+        <Text mx={1} fontSize="md" fontWeight="bold">
+          X
+        </Text>
+      </Flex>
+      <Flex width="50px" alignItems="center" justifyContent="center">
+        <Text mx={1} fontSize="md" fontWeight="bold">
+          Avg
+        </Text>
+      </Flex>
+    </Flex>
+  </Flex>
         {Array.from({ length: totalEnds }).map((_, rowIndex) => {
           const currentEnd = arrowValues.slice(
             rowIndex * 6,
@@ -43,14 +71,14 @@ const ScorecardRunningStats = ({ secondBoxRef, totalEnds, arrowValues }) => {
               width="100%"
               flex="1"
               borderBottom={"solid 1px black"}
-              justifyContent="center" // Center the 200px wide area
+              justifyContent="center"
             >
               <Flex
-                width="100%" // Set width for the container
-                justifyContent="space-between" // Evenly spread the columns
+                width="100%"
+                justifyContent="space-between"
               >
                 <Flex
-                  width="50px" // Width for each column (200px / 4)
+                  width="50px"
                   alignItems="center"
                   justifyContent="center"
                 >

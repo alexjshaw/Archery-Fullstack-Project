@@ -1,14 +1,14 @@
 import { Flex, Text, Box } from "@chakra-ui/react";
 
-const ArrowValues = ({ firstBoxRef, totalEnds, arrowValues }) => {
-
+const ArrowValues = ({ secondBoxRef, totalEnds, arrowValues }) => {
+  console.log('ArrowValues')
   return (
     <Box
     flex="1"
     overflowY="auto"
     bg={"gray.100"}
     borderRadius="md"
-    ref={firstBoxRef}
+    ref={secondBoxRef}
     minWidth="210px"
     maxWidth="320px"
     sx={{
@@ -18,6 +18,18 @@ const ArrowValues = ({ firstBoxRef, totalEnds, arrowValues }) => {
     }}
   >
     <Flex direction="column" alignItems="center" justifyContent="center">
+    <Flex
+    p={2}
+    width="100%"
+    borderBottom={"solid 1px black"}
+    justifyContent="center"
+  >
+    <Flex width="100%" justifyContent={"center"}>
+        <Text mx={1} fontSize="md" fontWeight="bold">
+          Arrow Values
+        </Text>
+    </Flex>
+  </Flex>
       {Array.from({ length: totalEnds }).map((_, rowIndex) => {
         const currentEnd = arrowValues.slice(
           rowIndex * 6,

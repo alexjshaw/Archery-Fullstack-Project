@@ -50,6 +50,16 @@ export const getSightmarks = async (req, res) => {
   }
 }
 
+export const getEquipmentSightmarks = async (req, res) => {
+  try {
+    const query = { equipment: req.params.id }
+    const result = await Sightmark.getSightmarks(query)
+    return sendDataResponse(res, 200, result)
+  } catch (error) {
+    return sendErrorResponse(res, 400, error.message)
+  }
+}
+
 export const deleteSightmark = async (req, res) => {
   try {
     const sightmarkId = req.params.id

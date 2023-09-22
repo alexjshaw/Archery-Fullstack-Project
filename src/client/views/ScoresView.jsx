@@ -38,6 +38,7 @@ import NewScoreForm from "../components/scorecard/NewScoreForm";
 import PageLoader from "../components/PageLoader";
 
 const ScoresView = () => {
+  console.log('ScoresView')
   const [currentScore, setCurrentScore] = useState(null);
   const [currentScoreId, setCurrentScoreId] = useState(null);
   const [userScores, setUserScores] = useState([]);
@@ -49,7 +50,6 @@ const ScoresView = () => {
   const cancelRef = useRef();
 
   useEffect(() => {
-    console.log("useEffect");
     fetchData();
   }, [getAccessTokenSilently, currentScoreId]);
 
