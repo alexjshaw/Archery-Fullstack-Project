@@ -146,7 +146,7 @@ const ScoresView = () => {
 
   return (
     <Flex
-      maxW="90%"
+      maxW="100%"
       mx="auto"
       p={4}
       height="100%"

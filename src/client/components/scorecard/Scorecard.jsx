@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Flex, Button } from "@chakra-ui/react";
 import { useAuth0 } from "@auth0/auth0-react";
+import { useBreakpointValue } from "@chakra-ui/react";
 
 import ScorecardValues from "./ScorecardValues";
 import ScorecardButtons from "./ScorecardButtons";
@@ -12,6 +13,7 @@ const Scorecard = ({ scoreId, currentScore, setCurrentScore }) => {
   const [fetchComplete, setFetchComplete] = useState(false);
   const [currentRound, setCurrentRound] = useState(null)
   const [currentSightmarks, setCurrentSightmarks] = useState(null)
+  const [activeSection, setActiveSection] = useState();
   const { getAccessTokenSilently } = useAuth0();
 
   useEffect(() => {
@@ -152,16 +154,15 @@ const Scorecard = ({ scoreId, currentScore, setCurrentScore }) => {
     return <PageLoader />;
   }
 
-  const testFunction = () => {
-    console.log('currentScore', currentScore)
-    console.log('currentRound', currentRound)
-    console.log('currentSightmarks', currentSightmarks)
+  const scorecardStyling = {
+    bg: "gray.100",
+    borderRadius:"lg"
   }
 
   return (
     <Flex direction="column" className="ScoresContent" mb={4} height="100%" justifyItems={"center"} gap={4} >
-      <ScorecardValues arrowValues={currentScore.arrowValues} currentScore={currentScore} currentRound={currentRound} currentSightmarks={currentSightmarks} />
-      <ScorecardTotals currentScore={currentScore} />
+      <ScorecardValues arrowValues={currentScore.arrowValues} currentScore={currentScore} currentRound={currentRound} currentSightmarks={currentSightmarks} styles={scorecardStyling} activeSection={activeSection} setActiveSection={setActiveSection}/>
+      <ScorecardTotals currentScore={currentScore} styles={scorecardStyling} />
       <ScorecardButtons handleButtonPress={handleButtonPress} currentRound={currentRound} />
     </Flex>
   );

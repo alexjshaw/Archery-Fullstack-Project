@@ -22,7 +22,7 @@ const features = [
 
 const HomeContent = () => {
   const gridTemplateColumns = useBreakpointValue({ base: '1fr', md: 'repeat(2, 1fr)', lg: 'repeat(2, 1fr)' });
-  const hoverBackgroundColor = useColorModeValue('gray.100', 'gray.700'); // Adjust the color based on your color mode
+  const hoverBackgroundColor = useColorModeValue('gray.200', 'gray.700'); // Adjust the color based on your color mode
 
   return (
     <Box p="4" >

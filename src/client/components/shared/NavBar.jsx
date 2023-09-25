@@ -33,7 +33,7 @@ const NavBar = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
-    <Box bg={useColorModeValue('gray.100', 'gray.900')} px={4}>
+    <Box bg={useColorModeValue('gray.200', 'gray.900')} px={4}>
       <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
       <Box w="180px" textAlign="left" display={{ md: 'none' }}>
         <IconButton
@@ -72,7 +72,7 @@ const NavBar = () => {
         <Box pb={4} display={{ md: 'none' }}>
           <Stack as={'nav'} spacing={4}>
             <Link as={ReactRouterLink} to="/dashboard" onClick={onClose}>Dashboard</Link>
-            <Link as={ReactRouterLink} to="/scores" onClick={onClose}>Scores</Link>
+            <Link as={ReactRouterLink} to="/scorescard" onClick={onClose}>Scores</Link>
             <Link as={ReactRouterLink} to="/stats" onClick={onClose}>Stats</Link>
             <Link as={ReactRouterLink} to="/profile" onClick={onClose}>Profile</Link>
             <Link as={ReactRouterLink} to="/friends" onClick={onClose}>Friends</Link>

@@ -42,7 +42,7 @@ const MainApp = () => {
     <Box w="100vw" h="100vh" bg="gray.50" className="App Box">
       <Flex direction="column" height="100%">
         <NavBar />
-        <Box as="main" maxW='90vw' w={"100%"} mx={'auto'} overflowY="auto" className="Content Box" mb={4} >
+        <Box as="main" maxW='100vw' w={"100%"} mx={'auto'} overflowY="auto" className="Content Box" mb={4} >
           <Routes>
             <Route path="/" element={<HomeView />} />
             <Route

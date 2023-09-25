@@ -4,7 +4,7 @@ import ArrowValues from "./ArrowValues";
 import ScorecardRunningStats from "./ScorecardRunningStats";
 import ScorecardEndInfo from "./ScorecardEndInfo";
 
-const ScorecardValues = ({ arrowValues, currentScore, currentRound, currentSightmarks }) => {
+const ScorecardValues = ({ arrowValues, currentScore, currentRound, currentSightmarks, styles, activeSection, setActiveSection }) => {
   console.log('ScorecardValues')
   const totalEnds = arrowValues.length / 6;
 
@@ -72,12 +72,13 @@ const ScorecardValues = ({ arrowValues, currentScore, currentRound, currentSight
       justifyContent="center"
       overflowY="auto"
       gap={6}
+      pb={2}
     >
-      <ScorecardEndInfo firstBoxRef={firstBoxRef} totalEnds={totalEnds} currentScore={currentScore} currentRound={currentRound} currentSightmarks={currentSightmarks} arrowValues={arrowValues} />
+      <ScorecardEndInfo firstBoxRef={firstBoxRef} totalEnds={totalEnds} currentScore={currentScore} currentRound={currentRound} currentSightmarks={currentSightmarks} arrowValues={arrowValues} styles={styles} activeSection={activeSection} setActiveSection={setActiveSection} />
 
-      <ArrowValues secondBoxRef={secondBoxRef} totalEnds={totalEnds} arrowValues={arrowValues} />
+      <ArrowValues secondBoxRef={secondBoxRef} totalEnds={totalEnds} arrowValues={arrowValues} styles={styles}  />
 
-      <ScorecardRunningStats thirdBoxRef={thirdBoxRef} totalEnds={totalEnds} arrowValues={arrowValues} />
+      <ScorecardRunningStats thirdBoxRef={thirdBoxRef} totalEnds={totalEnds} arrowValues={arrowValues} styles={styles} activeSection={activeSection} setActiveSection={setActiveSection} />
 
     </Flex>
   );
