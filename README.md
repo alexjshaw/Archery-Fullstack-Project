@@ -1,6 +1,7 @@
 # Archery Fullstack Project
 This project began life as my final project for the Boolean UK Fullstack Software Development bootcamp that I undertook from February to September 2023. Initially tackled over two weeks, but with the intention to continue working on it going forwards and using it as a platform to implement new methods, libraries and tools as I continue my independent learning.
-This app is very much a work in progress, with the foundations of a sound back-end API and database in place, with robust user authentication, with a front end that is intended to be functional if not pretty! In the coming weeks and months this project will continue to evolve, as new features are implemented, different layouts are tested, and an overarching design will be implemented.
+This app is very much a work in progress, with the foundations of a sound back-end API and database in place, with robust user authentication, with a front end that is intended to be functional if not pretty! Many features are not yet implemented on the front end, however the back end routes and database are in place.
+In the coming weeks and months this project will continue to evolve, as new features are implemented, different layouts are tested, and an overarching design will be implemented.
 # Project Background
 Archery is a sport I've been heavily involved with since the late 1990s, and I have used and fought with just about every app and website there is. More than two decades after I started the sport I am yet to find a single app that I have liked, or that delivers all of the features I've looked for.
 There are three main issues which I have seen consistently throughout the years.
